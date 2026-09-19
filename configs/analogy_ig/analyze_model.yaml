@@ -1,0 +1,4 @@
+upstream_dir: data/analogy_ig/dataset/downstream/logprob_qwen7b_projdir
+dataset_dir: data/analogy_ig/dataset
+composite_json: /Users/schapiro/Desktop/Experiments/comb-creat-eval/data/kg_creat/kombine_test30/scores/composite.json
+output_dir: data/analogy_ig/dataset/downstream/logprob_qwen7b_projdir/downstream/by_model

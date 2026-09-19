@@ -1,0 +1,4 @@
+upstream_dir: data/analogy_ig/dataset/downstream/logprob_qwen7b_projdir
+dataset_dir: data/analogy_ig/dataset
+anchor_distance_json: /Users/schapiro/Desktop/Experiments/comb-creat-eval/data/kg_creat/kombine_test30/analysis/anchor_distance.json
+output_dir: data/analogy_ig/dataset/downstream/logprob_qwen7b_projdir/downstream/distance

@@ -1,0 +1,15 @@
+# Sensitivity check: same estimators as score_logprob.yaml under a different held-out reader.
+# Runs on a Lambda GPU box (backend hf); results are synced back to the same downstream tree.
+upstream_dir: data/analogy_ig/dataset
+output_dir: data/analogy_ig/dataset/downstream/logprob_llama31_8b_projdir
+backend: hf
+dtype: bfloat16
+model: meta-llama/Llama-3.1-8B-Instruct
+seed: 0
+resume: true   # reuse an existing output dir and append only records not yet scored
+debug_limit: 4
+selection:
+  require_U_an: false
+  include_invalid_reasons: [relations_differ, factual]
+  require_unanimous_panel: false
+  require_projection: false

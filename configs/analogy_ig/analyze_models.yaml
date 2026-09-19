@@ -1,0 +1,9 @@
+dataset_dir: data/analogy_ig/dataset
+readers:
+  qwen25_7b_8bit_mlx: data/analogy_ig/dataset/downstream/logprob_qwen7b_projdir
+  llama31_8b: data/analogy_ig/dataset/downstream/logprob_llama31_8b_projdir
+  mistral7b_v03: data/analogy_ig/dataset/downstream/logprob_mistral7b_v03_projdir
+  gemma2_9b: data/analogy_ig/dataset/downstream/logprob_gemma2_9b_projdir
+  qwen25_14b: data/analogy_ig/dataset/downstream/logprob_qwen25_14b_projdir
+  olmo2_7b: data/analogy_ig/dataset/downstream/logprob_olmo2_7b_projdir
+output_dir: data/analogy_ig/dataset/downstream/readers_comparison_projdir

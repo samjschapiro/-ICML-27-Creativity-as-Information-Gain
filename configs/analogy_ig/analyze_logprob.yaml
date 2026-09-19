@@ -1,0 +1,2 @@
+upstream_dir: data/analogy_ig/dataset/downstream/logprob_qwen7b_projdir
+output_dir: data/analogy_ig/dataset/downstream/logprob_qwen7b_projdir/downstream/analysis

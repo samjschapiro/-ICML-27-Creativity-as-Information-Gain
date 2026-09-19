@@ -1,0 +1,32 @@
+control: named   # which control the figure shows: named (source concept named, no path) or format (content-free path)
+dataset_dir: data/analogy_ig/dataset
+paper_media_dir: papers/6aad5b22035168dccf225738/media
+output_dir: data/analogy_ig/dataset/downstream/simple_figure
+record_id: "google_gemini-3-1-pro-preview|E0|0.9|0"
+# must match the scoring run configs so the unrelated source path is reproduced exactly
+score_seed: 0
+score_selection:
+  require_U_an: false
+  include_invalid_reasons: [relations_differ, factual]
+  require_unanimous_panel: false
+  require_projection: false
+readers:
+  qwen7b: data/analogy_ig/dataset/downstream/logprob_qwen7b_projdir
+  qwen14b: data/analogy_ig/dataset/downstream/logprob_qwen25_14b_projdir
+  llama8b: data/analogy_ig/dataset/downstream/logprob_llama31_8b_projdir
+  mistral7b: data/analogy_ig/dataset/downstream/logprob_mistral7b_v03_projdir
+  gemma9b: data/analogy_ig/dataset/downstream/logprob_gemma2_9b_projdir
+  olmo7b: data/analogy_ig/dataset/downstream/logprob_olmo2_7b_projdir
+caption: >-
+  How the two quantities are measured, on one analogy ({u} and {v}, written by {model}). In each
+  row the same scored line is given to a language model after different inputs, and the model's
+  log-probability of that line is recorded. (a) The scored line is the target path of the analogy.
+  The baseline input gives only the target concept and the relations the path must use. The
+  analogy input also shows the real source path. The control input is the baseline input with one
+  addition: it names the concept the analogy comes from, without showing its path, so the model
+  is credited with whatever it already knows about that concept. (b) The scored line is one fact about the invented concept. The baseline input
+  gives the target domain and the concept's name; the analogy input gives both paths, how they
+  line up, and the facts about the source concept that were carried over. The control is an
+  existing fact about the source concept, scored after the same two kinds of input; since the
+  model already knows it, the analogy should add little. Log-probabilities are the mean over six
+  language models.

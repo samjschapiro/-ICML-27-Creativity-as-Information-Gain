@@ -1,0 +1,22 @@
+[project]
+name = "creativity-as-information-gain"
+version = "0.1.0"
+description = "Theory + estimators: combinatorial creativity as information gain (ICML 27)"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "numpy",
+    "pandas",
+    "scipy",
+    "pyyaml",
+    "python-dotenv",
+    "tqdm",
+    "mlx-lm>=0.24",
+    "matplotlib",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

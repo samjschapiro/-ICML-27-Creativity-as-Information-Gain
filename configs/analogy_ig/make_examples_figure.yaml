@@ -1,0 +1,31 @@
+control: named   # which control the figure shows: named (source concept named, no path) or format (content-free path)
+dataset_dir: data/analogy_ig/dataset
+paper_media_dir: papers/6aad5b22035168dccf225738/media
+output_dir: data/analogy_ig/dataset/downstream/examples_figure
+readers:
+  qwen7b: data/analogy_ig/dataset/downstream/logprob_qwen7b_projdir
+  qwen14b: data/analogy_ig/dataset/downstream/logprob_qwen25_14b_projdir
+  llama8b: data/analogy_ig/dataset/downstream/logprob_llama31_8b_projdir
+  mistral7b: data/analogy_ig/dataset/downstream/logprob_mistral7b_v03_projdir
+  gemma9b: data/analogy_ig/dataset/downstream/logprob_gemma2_9b_projdir
+  olmo7b: data/analogy_ig/dataset/downstream/logprob_olmo2_7b_projdir
+examples:
+  - id: "google_gemini-3-1-pro-preview|E0|0.9|0"
+    title: "A. Valid mapping; invention judged faithful and coherent"
+  - id: "x-ai_grok-4-6|E13|0.9|0"
+    title: "B. Valid mapping; invention judged faithful and coherent"
+  - id: "z-ai_glm-4-5-air|E26|0.9|0"
+    title: "C. Valid mapping; invention judged unfaithful"
+  - id: "google_gemini-2-5-pro|E3|0.9|0"
+    title: "D. Valid mapping; invention judged faithful but incoherent"
+  - id: "z-ai_glm-4-5-air|E23|0.9|0"
+    title: "E. Mapping failed the factuality check"
+caption: >-
+  Five analogies from the benchmark. All numbers are in nats (natural-log probability units) and are
+  averaged over six language models. For the target path, the number is the increase in its
+  log-probability when the model has seen the source path, compared with seeing only the relations of
+  the path; the number in parentheses is the same quantity when the model is instead only told which
+  concept the analogy comes from, without its path. For each fact about the invented concept, the number is the increase in its
+  log-probability when the model has seen the full analogy, compared with seeing only the target domain.
+  Existing facts about the source concept are scored the same way. Judgements are by a panel of three
+  language models.

@@ -1,0 +1,3 @@
+# Extract all KOMBINE analogy heads (35 models x 30 items) with judge verdicts.
+kombine_dir: /Users/schapiro/Desktop/Experiments/comb-creat-eval/data/kg_creat/kombine_test30
+output_dir: data/analogy_ig/dataset

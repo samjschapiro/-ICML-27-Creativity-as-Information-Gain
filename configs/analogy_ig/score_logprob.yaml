@@ -1,0 +1,14 @@
+# Type-1 and type-3 information-gain estimators under a held-out local probability model.
+# The model must NOT be one of the 35 scored systems (Qwen2.5-7B is not; qwen-2.5-72b is).
+upstream_dir: data/analogy_ig/dataset
+output_dir: data/analogy_ig/dataset/downstream/logprob_qwen7b_projdir
+model: mlx-community/Qwen2.5-7B-Instruct-8bit
+seed: 0
+resume: true   # reuse an existing output dir and append only records not yet scored
+debug_limit: 4
+selection:
+  # score valid analogies AND the structurally invalid ones (relations_differ) as the type-1 contrast
+  require_U_an: false
+  include_invalid_reasons: [relations_differ, factual]
+  require_unanimous_panel: false
+  require_projection: false

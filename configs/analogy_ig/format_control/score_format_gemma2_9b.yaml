@@ -1,0 +1,9 @@
+# Format control (abstract, content-free source path) attached to an existing run.
+upstream_dir: data/analogy_ig/dataset/downstream/logprob_gemma2_9b_projdir
+dataset_dir: data/analogy_ig/dataset
+output_dir: data/analogy_ig/dataset/downstream/logprob_gemma2_9b_projdir/downstream/format_control
+backend: hf
+dtype: bfloat16
+model: google/gemma-2-9b-it
+debug_limit: 4
+control: format

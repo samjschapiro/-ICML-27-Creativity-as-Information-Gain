@@ -1,0 +1,9 @@
+# Format control (abstract, content-free source path) attached to an existing run.
+upstream_dir: data/analogy_ig/dataset/downstream/logprob_qwen25_14b_projdir
+dataset_dir: data/analogy_ig/dataset
+output_dir: data/analogy_ig/dataset/downstream/logprob_qwen25_14b_projdir/downstream/named_control
+backend: hf
+dtype: bfloat16
+model: Qwen/Qwen2.5-14B-Instruct
+debug_limit: 4
+control: named
