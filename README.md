@@ -21,6 +21,7 @@ bash scripts/analogy_ig/build_dataset.sh        # KOMBINE analogies + judge verd
 bash scripts/analogy_ig/score_logprob.sh        # alignment and invention gains under one reader (config: model, backend)
 bash scripts/analogy_ig/analyze_logprob.sh      # predictions and contrasts for one run
 bash scripts/analogy_ig/analyze_models.sh       # cross-reader comparison table
+bash scripts/analogy_ig/analyze_invention_block.sh  # invention gain ladder (skeleton / instruction / mapping / content), six readers
 bash scripts/analogy_ig/make_camera_figures.sh  # paper histograms (Nimbus Roman, ICML widths)
 bash scripts/analogy_ig/lambda_run.sh <ip> ...  # run readers on a Lambda box; lambda_autofinish*.sh fetch and terminate
 ```

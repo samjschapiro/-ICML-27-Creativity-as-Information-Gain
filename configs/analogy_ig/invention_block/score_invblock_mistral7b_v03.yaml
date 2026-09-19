@@ -1,0 +1,8 @@
+# Invention measurement framed like alignment (skeleton task; structure / instruction / content inputs).
+upstream_dir: data/analogy_ig/dataset/downstream/logprob_mistral7b_v03_projdir
+dataset_dir: data/analogy_ig/dataset
+output_dir: data/analogy_ig/dataset/downstream/logprob_mistral7b_v03_projdir/downstream/invention_block
+backend: hf
+dtype: bfloat16
+model: mistralai/Mistral-7B-Instruct-v0.3
+debug_limit: 4

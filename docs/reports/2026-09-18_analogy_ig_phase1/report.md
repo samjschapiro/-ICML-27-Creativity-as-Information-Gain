@@ -259,6 +259,57 @@ projecting a fact and projecting a definition, and it is the cleanest result in 
 Invention gain does not depend on which way the projection runs: 22.8 nats for the 325 analogies
 that project from the first anchor to the second, 23.5 for the 139 that project the other way.
 
+### Invention gain, re-measured: the whole description, four inputs (2026-09-19)
+
+The per-fact measurement above scores one invented triple at a time, and about half to two
+thirds of its gain falls on relation tokens that the full analogy has just displayed. The
+measurement now used in the paper scores the whole description of the invented concept at once,
+as a task with a fixed relational skeleton, so that no input can hand the reader the relations.
+
+The task text fixes the invention's name, its domain, the relations and their order, and asks the
+reader to supply the concepts. Four inputs are appended to it, each revealing more of the analogy:
+
+| input | what is appended to the task |
+|---|---|
+| relational skeleton | nothing |
+| analogy instruction | "Use an analogy with the concept <source concept> from the domain of <source>." |
+| analogy mapping | the instruction, then both aligned paths with their correspondences |
+| analogy content | the source concept's facts, then both aligned paths with their correspondences |
+
+Log-probability of the whole description, one value per analogy averaged over the six readers,
+561 valid analogies:
+
+| input | mean log-prob | gain over previous step | positive | Wilcoxon p |
+|---|---|---|---|---|
+| relational skeleton | -44.0 | | | |
+| analogy instruction | -42.8 | +1.2 | 63% | 1e-12 |
+| analogy mapping | -26.2 | +16.6 [15.5, 17.7] | 91% | 5e-87 |
+| analogy content | -17.0 | +9.2 [8.6, 9.8] | 97% | 1e-90 |
+
+Total gain, content over skeleton: +27.0 nats [25.7, 28.3], positive for 99% of analogies. About
+two thirds of it arrives with the aligned paths alone, before any fact about the source concept
+is shown (reader range 48% to 74%). Relation tokens contribute nothing under any input (mean
+-0.1 nats), so the whole gain is on the concepts the reader has to supply.
+
+Per reader, total gain and its split:
+
+| reader | skeleton | instruction | mapping | content | mapping step | facts step | total |
+|---|---|---|---|---|---|---|---|
+| Qwen2.5-7B | -42.9 | -41.9 | -22.4 | -15.2 | +19.5 | +7.2 | +27.7 |
+| Llama-3.1-8B | -32.7 | -32.6 | -20.1 | -13.3 | +12.5 | +6.9 | +19.5 |
+| Mistral-7B | -53.5 | -51.1 | -34.6 | -23.5 | +16.5 | +11.1 | +30.0 |
+| Gemma-2-9B | -43.7 | -43.3 | -31.8 | -19.1 | +11.5 | +12.7 | +24.6 |
+| Qwen2.5-14B | -51.2 | -47.9 | -24.2 | -13.7 | +23.7 | +10.5 | +37.5 |
+| OLMo-2-7B | -40.1 | -40.0 | -23.9 | -17.4 | +16.1 | +6.6 | +22.8 |
+
+The integration judge separates on the total gain under every reader (Cliff's delta 0.25 to
+0.44, was 0.19 to 0.27 per fact). Surprise and total gain correlate at +0.07 to +0.10.
+
+Example, Fractional Mandate (three facts), reader-averaged: skeleton -53.5, instruction -45.8,
+mapping -22.8, content -10.8.
+
+![invention histogram, four inputs](figures/camera_fig_invention_gain_hist.png)
+
 ### The two judges are not the same thing (half supported)
 
 ![judges](figures/fig3_judges.png)
@@ -468,6 +519,8 @@ above use entity tokens against the unrelated-path control; the two agree in eve
 
 ![alignment histogram](figures/camera_fig_alignment_gain_hist.png)
 ![invention histogram](figures/camera_fig_invention_gain_hist.png)
+
+The invention histogram now shows the four-input measurement of the previous section (skeleton, instruction, mapping, content), not the per-fact one.
 
 ## Qualitative examples
 

@@ -1,0 +1,8 @@
+# Invention measurement framed like alignment (skeleton task; structure / instruction / content inputs).
+upstream_dir: data/analogy_ig/dataset/downstream/logprob_gemma2_9b_projdir
+dataset_dir: data/analogy_ig/dataset
+output_dir: data/analogy_ig/dataset/downstream/logprob_gemma2_9b_projdir/downstream/invention_block
+backend: hf
+dtype: bfloat16
+model: google/gemma-2-9b-it
+debug_limit: 4

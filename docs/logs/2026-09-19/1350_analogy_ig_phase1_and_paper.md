@@ -68,3 +68,19 @@ Claude never uses the overwrite flag.
 - Grok models: perfect integration pass rate, near-zero invention gain; look by hand.
 - Phase 2 (schema transfer, candidate inference, restructuring) designed in
   `docs/tracks/analogy_ig/design.md`, not built.
+
+## Addendum (2026-09-19, evening): invention gain re-measured, alignment p-values
+- Re-scrutinised the invention baselines with the user. Old per-fact measure put half to two
+  thirds of its gain on relation tokens copied from the source facts. Replaced by a skeleton task
+  over the whole description M[Phi] with four inputs (skeleton, instruction, mapping, content);
+  the mapping input isolates the locus of the gain. Scored under all six readers
+  (`score_invention_block.py`, Lambda instance auto-terminated by `lambda_autofinish_invblock.sh`).
+- Result, reader-averaged over 561 valid analogies: -44.0 / -42.8 / -26.2 / -17.0 nats; the
+  aligned paths alone are worth +16.6, the source facts a further +9.2, total +27.0 (99% positive);
+  about two thirds of the gain arrives with the mapping. Every reader agrees. Recorded in
+  `docs/tracks/analogy_ig/progress.md`, the phase-1 report, and the paper's estimator appendix;
+  invention histogram redrawn from the four inputs (`camera_figures_invblock`).
+- Alignment gain p-values reported: +13.1 nats per analogy, Wilcoxon p = 2e-87; per anchor pair
+  (n = 30) all positive, p = 2e-9; per generating model (n = 35) all positive, p = 6e-11.
+- Still open: association-vs-analogy test (needs `kombine_retest30`, which shares the 30 pairs
+  across tasks but has no judge scores); symmetry check.

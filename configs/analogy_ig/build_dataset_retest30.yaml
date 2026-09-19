@@ -1,0 +1,4 @@
+# KOMBINE retest30: the same 30 anchor pairs across association, analogy and blending (12 models).
+# Needed for the association-vs-analogy test, which requires association paths on the analogy pairs.
+kombine_dir: /Users/schapiro/Desktop/Experiments/comb-creat-eval/data/kg_creat/kombine_retest30
+output_dir: data/analogy_ig/dataset_retest30

@@ -176,3 +176,39 @@ assets from `make_report_assets.py`). P1b section to be filled when the target-s
 - Figure 2 redrawn per user: raw log-probability of the target path (reader-averaged) under three
   inputs, colours relational structure #D9696B, analogy instruction #488AE5, analogy content
   #9CDC9B; no legend, x label or annotation. Means -42.3 / -43.5 / -29.2 nats.
+
+## Decision (2026-09-19): invention gain re-measured as a skeleton task over the whole description
+- Problem with the per-fact measurement: each invented triple was scored one at a time and about
+  half to two thirds of its gain fell on relation tokens copied from the source facts, so the
+  number mixed "the mapping helps conceptualise the invention" with "the relation names are
+  given". The user asked for the log-probability of the whole description M[Phi] and for a
+  framing parallel to the alignment task.
+- New measurement (`score_invention_block.py`, attached to each reader run as
+  `downstream/invention_block/`): the task fixes the relations, their order, the number of facts
+  and the invention's slot ("describe the novel concept '<h>', a concept in the domain of
+  '<target>', using these relations in this order, where X, Y, Z stand for concepts you must
+  supply"), and the scored block is the whole description M[Phi] rendered as a path. Four
+  inputs: structure (task only), instruction (task + "use an analogy with <phi> from the domain of
+  <source>"), mapping (task + both aligned paths with correspondences, no source facts), content
+  (task + source facts + both paths with correspondences). The mapping input was added at the
+  user's request to isolate where the gain comes from. No system message.
+- Six readers (five on one A100, ~5 min each, instance auto-terminated; Qwen-7B local). Valid
+  analogies, n = 561, log-probability of the whole description averaged over readers:
+  structure -44.0, instruction -42.8, mapping -26.2, content -17.0. Consecutive gains: naming the
+  source +1.2 (positive for 63%), the aligned paths +16.6 (95% CI [15.5, 17.7], Wilcoxon
+  p = 5e-87, positive for 91%), the source facts on top +9.2 ([8.6, 9.8], p = 1e-90, positive for
+  97%). Total +27.0 ([25.7, 28.3], positive for 99%). About two thirds of the total arrives with
+  the mapping alone (reader range 48% to 74%). Relation tokens contribute nothing in any input
+  (mean -0.1 nats), so the gain is on the supplied concepts.
+- Per reader, total gain: Qwen-7B 27.7, Llama-8B 19.5, Mistral-7B 30.0, Gemma-9B 24.6,
+  Qwen-14B 37.5, OLMo-7B 22.8; the mapping step is the largest step for every reader except
+  Gemma (11.5 vs 12.7 for the facts). Integration judge: Cliff's delta 0.25 to 0.44 on the total
+  gain, all six readers (was 0.19 to 0.27 per fact). Surprise vs total gain, raw Spearman +0.07 to
+  +0.10.
+- Figure: `make_camera_figures.py` now draws the invention histogram from these four inputs
+  (relational skeleton #D9696B, analogy instruction #488AE5, analogy mapping #F0B75B, analogy
+  content #9CDC9B; x range -110 to 0, same as the alignment histogram). Written to a new output
+  dir `camera_figures_invblock` (config `make_camera_figures_invblock.yaml`); PDF copied to the
+  paper's `media/figures/`. Cross-reader ladder: `analyze_invention_block.py` ->
+  `downstream/invention_block_ladder/`.
+- Example (Fractional Mandate, three facts, reader-averaged): -53.5 / -45.8 / -22.8 / -10.8.

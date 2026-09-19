@@ -190,3 +190,65 @@ def ctx_align_named(v: str, u: str, n_hops: int, relations: list[str]) -> list[d
     user = (f"Write a {n_hops}-triple path describing '{v}' by analogy with '{u}', starting at '{v}', "
             f"using exactly these relations in this order: {rel_txt}.")
     return [{"role": "system", "content": _SYS}, {"role": "user", "content": user}]
+
+
+# ---------------------------------------------------------------------------------------------
+# Invention measurement framed like the alignment one: "describe the novel concept using these
+# relations". The skeleton fixes relations, fact count and the concept's slot; entities are supplied.
+# No system message; the task text carries the role instruction.
+# ---------------------------------------------------------------------------------------------
+
+_LETTERS = "XYZWVUTSRQ"
+
+
+def invention_skeleton(invention: str, image_triples: list) -> list:
+    """Image triples with every entity other than the invented concept replaced by a variable,
+    consistently (the same entity gets the same letter wherever it recurs)."""
+    var, out = {}, []
+    for h, r, t in image_triples:
+        row = []
+        for e in (str(h), str(t)):
+            if e == invention:
+                row.append(e)
+            else:
+                if e not in var:
+                    var[e] = _LETTERS[len(var)]
+                row.append(var[e])
+        out.append([row[0], r, row[1]])
+    return out
+
+
+def invention_task(invention: str, target_anchor: str, image_triples: list) -> str:
+    skel, _ = render_path(invention_skeleton(invention, image_triples))
+    letters = ", ".join(sorted({x for row in invention_skeleton(invention, image_triples) for x in (row[0], row[2]) if x != invention}))
+    return ("Task: Your task is to describe a concept with factual relational triples, one per line, in "
+            f"the form 'head --relation--> tail'. Describe the novel concept '{invention}', a concept in "
+            f"the domain of '{target_anchor}', using these relations in this order, where {letters} stand "
+            f"for concepts you must supply:\n{skel}")
+
+
+def ctx_invention_block(task: str, block: str | None) -> list[dict]:
+    return [{"role": "user", "content": task if block is None else task + "\n\n" + block}]
+
+
+def inv_block_instruction(projected: str, source_anchor: str) -> str:
+    return f"Use an analogy with the concept {projected} from the domain of {source_anchor}."
+
+
+def inv_block_content(projected: str, source_anchor: str, target_anchor: str, source_triples: list,
+                      source_path: list, target_path: list) -> str:
+    facts, _ = render_path(source_triples)
+    ps, _ = render_path(source_path); pt, _ = render_path(target_path)
+    pairs = "; ".join(f"'{a}' corresponds to '{b}'" for a, b in _alignment_pairs(source_path, target_path))
+    return (f"Use the analogous {projected} facts:\n{facts}\n\nand the analogy between {source_anchor} and "
+            f"{target_anchor}:\n{ps}\n\n{pt}\n\nwhere {pairs}.")
+
+
+def inv_block_mapping(projected: str, source_anchor: str, target_anchor: str,
+                      source_path: list, target_path: list) -> str:
+    """Intermediate input: the instruction plus the full analogy (both paths with correspondences),
+    but not the facts about the source concept."""
+    ps, _ = render_path(source_path); pt, _ = render_path(target_path)
+    pairs = "; ".join(f"'{a}' corresponds to '{b}'" for a, b in _alignment_pairs(source_path, target_path))
+    return (f"Use an analogy with the concept {projected} from the domain of {source_anchor}, following "
+            f"the analogy between {source_anchor} and {target_anchor}:\n{ps}\n\n{pt}\n\nwhere {pairs}.")

@@ -69,6 +69,23 @@ def _load(readers: dict, dataset_dir: Path, composite_json: Path) -> dict:
         df["L_structure"] = [base[i] for i in df.id]   # relations only
         df["L_instruction"] = [fmt[i] for i in df.id]  # control (named source)
         df["L_content"] = [real[i] for i in df.id]     # real source path
+        inv0, inv1, src1 = {}, {}, {}
+        for r in rows:
+            t3 = r.get("type3")
+            if t3 and "images" in t3:
+                inv0[r["id"]] = float(np.mean([im["B0"]["logp"] for im in t3["images"]]))
+                inv1[r["id"]] = float(np.mean([im["B1"]["logp"] for im in t3["images"]]))
+                src1[r["id"]] = float(np.mean([sr["S1"]["logp"] for sr in t3["sources"]]))
+        df["L_inv_target_only"] = [inv0.get(i, np.nan) for i in df.id]
+        df["L_inv_analogy"] = [inv1.get(i, np.nan) for i in df.id]
+        df["L_fact_analogy"] = [src1.get(i, np.nan) for i in df.id]
+        # invention block (skeleton task; whole description M[Phi] scored jointly under four inputs)
+        bpath = Path(d) / "downstream" / "invention_block" / "logprobs_invention_block.jsonl"
+        if not bpath.exists():
+            raise FileNotFoundError(f"FATAL: invention block missing for {name}: {bpath}")
+        blk = {r["id"]: r for r in map(json.loads, open(bpath))}
+        for step in ("structure", "instruction", "mapping", "content"):
+            df[f"L_inv_{step}"] = [blk[i][step]["logp"] if i in blk else np.nan for i in df.id]
         out[name] = df
     return out, comp
 
@@ -203,30 +220,32 @@ def main(config_path, overwrite=False, debug=False):
                                  "mean_instruction": float(L.L_instruction.mean()), "mean_content": float(L.L_content.mean()),
                                  "colors": {"relational structure": RED, "analogy instruction": BLU, "analogy content": GRN}}
 
-    # ---- Fig 2b: histogram of per-analogy gains averaged over the six readers --------------
-    inv = pd.concat([data[n].set_index("id").E_inv.rename(n) for n in names], axis=1).mean(axis=1)
-    fact = pd.concat([data[n].set_index("id").E_src.rename(n) for n in names], axis=1).mean(axis=1)
-    both = pd.concat([inv.rename("inv"), fact.rename("fact")], axis=1).dropna()
-    frac = float((both.inv > both.fact).mean())
-    fig, ax = plt.subplots(figsize=(COL_W, 2.1))
-    lo, hi = -30, 50
+    # ---- Fig 2b: raw joint log-probability of the invented concept's description under four inputs,
+    #      reader-averaged: skeleton only / + analogy instruction / + aligned paths / + source facts
+    AMB = "#F0B75B"
+    series = {}
+    for col in ("L_inv_structure", "L_inv_instruction", "L_inv_mapping", "L_inv_content"):
+        series[col] = pd.concat([data[n].set_index("id")[col].rename(n) for n in names], axis=1).mean(axis=1)
+    F = pd.DataFrame(series).dropna()
+    fig, ax = plt.subplots(figsize=(COL_W, 2.0))
+    lo, hi = -110, 0
     bins = np.linspace(lo, hi, 46)
-    ax.hist(both.inv.clip(lo, hi), bins=bins, histtype="stepfilled", color=BLUE, alpha=0.25, lw=0)
-    ax.hist(both.inv.clip(lo, hi), bins=bins, histtype="step", color=BLUE, lw=1.2, label="facts about the invented concept")
-    ax.hist(both.fact.clip(lo, hi), bins=bins, histtype="stepfilled", color=ORANGE, alpha=0.25, lw=0)
-    ax.hist(both.fact.clip(lo, hi), bins=bins, histtype="step", color=ORANGE, lw=1.2, label="existing facts about the source concept")
-    ax.axvline(0, color=INK2, lw=0.6, ls=":")
-    ax.axvline(both.inv.mean(), color=BLUE, lw=0.8, ls="--"); ax.axvline(both.fact.mean(), color=ORANGE, lw=0.8, ls="--")
-    ax.text(0.98, 0.95, f"invented concept higher\nfor {frac:.1%} of analogies", transform=ax.transAxes, ha="right", va="top", fontsize=7, color=INK2)
-    ax.set_ylabel("analogies", color=INK); ax.set_xlim(lo, hi)
+    for col, colr in (("L_inv_structure", RED), ("L_inv_instruction", BLU), ("L_inv_mapping", AMB), ("L_inv_content", GRN)):
+        x = F[col].clip(lo, hi)
+        ax.hist(x, bins=bins, histtype="stepfilled", color=colr, alpha=0.35, lw=0)
+        ax.hist(x, bins=bins, histtype="step", color=colr, lw=1.3)
+        ax.axvline(x.mean(), color=colr, lw=0.9, ls="--")
+    ax.set_xlim(lo, hi); ax.set_xlabel(""); ax.set_ylabel("analogies", color=INK)
     ax.grid(axis="y", color=GRID, lw=0.5); ax.set_axisbelow(True); ax.tick_params(colors=INK2)
     for sp in ("left", "bottom"):
         ax.spines[sp].set_color(INK2)
-    ax.set_xlabel("increase in log-probability of the fact (nats), mean over six language models", color=INK)
-    ax.legend(loc="lower center", bbox_to_anchor=(0.45, 1.0), ncol=2, handletextpad=0.3, columnspacing=1.0, borderaxespad=0.0)
     save(fig, "fig_invention_gain_hist")
-    summary["invention_hist"] = {"n": int(len(both)), "mean_invention": float(both.inv.mean()),
-                                 "mean_fact": float(both.fact.mean()), "frac_invention_gt_fact": frac}
+    summary["invention_hist"] = {"n": int(len(F)), "mean_structure": float(F.L_inv_structure.mean()),
+                                 "mean_instruction": float(F.L_inv_instruction.mean()),
+                                 "mean_mapping": float(F.L_inv_mapping.mean()),
+                                 "mean_content": float(F.L_inv_content.mean()),
+                                 "colors": {"relational skeleton": RED, "analogy instruction": BLU,
+                                            "analogy mapping": AMB, "analogy content": GRN}}
 
     # ---- Fig 3: judge contrasts (Cliff's delta) --------------------------------------------
     integ_v, coh_v = [], []
