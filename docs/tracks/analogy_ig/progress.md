@@ -212,3 +212,8 @@ assets from `make_report_assets.py`). P1b section to be filled when the target-s
   paper's `media/figures/`. Cross-reader ladder: `analyze_invention_block.py` ->
   `downstream/invention_block_ladder/`.
 - Example (Fractional Mandate, three facts, reader-averaged): -53.5 / -45.8 / -22.8 / -10.8.
+
+## Decision (2026-09-19): association-vs-analogy test shelved
+- The user set aside the question of whether an association path between the same two anchors
+  carries information about the analogy's target path. Not pursued for now; would need a dataset
+  variant for `kombine_retest30`, which shares the 30 anchor pairs across tasks but has no judge scores.
