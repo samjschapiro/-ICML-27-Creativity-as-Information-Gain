@@ -45,7 +45,7 @@
   +1.5 over skeleton, both inputs +0.8). P1 and P2 supported; P3 half (inherited lines follow
   their input; synergy ordering not seen); P4 not supported; P6 supported (schema buys +4.4 per
   blend against the analogy mapping's +16.6 per invention).
-- Figures: `make_blend_figures.py` -> `downstream/blend_figures/`: two panels, inherited lines
+- Figures: `make_blend_figures.py` -> `downstream/blend_figures_wide/` (x range -120 to 0): two panels, inherited lines
   and emergent lines under input u / input v / both inputs / generic space (colours #D9696B,
   #F0B75B, #488AE5, #9CDC9B), reader-averaged; PDFs copied to the paper's `media/figures/`.
 - Example for the figure: Liquid Franchise (sonnet-5, F0) is a weak case (generic space -200.1 vs

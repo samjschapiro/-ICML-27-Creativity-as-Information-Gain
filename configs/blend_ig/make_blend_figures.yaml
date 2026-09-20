@@ -1,2 +1,3 @@
 ladder_dir: data/blend_ig/dataset/downstream/blend_block_ladder
-output_dir: data/blend_ig/dataset/downstream/blend_figures
+output_dir: data/blend_ig/dataset/downstream/blend_figures_wide
+x_range: [-120, 0]
