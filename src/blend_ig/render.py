@@ -51,12 +51,17 @@ def blk_schema(concept: str, u: str, v: str, schema: str) -> str:
     return blk_inputs(concept, u, v) + f" What {u} and {v} share, and what makes them blendable, is: {schema}."
 
 
+def blk_schema_only(concept: str, schema: str) -> str:
+    """The generic space alone, without naming the two inputs."""
+    return f"{concept} is a new concept built on this shared schema: {schema}."
+
+
 def ctx_blend_block(task: str, block: str | None) -> list[dict]:
     return [{"role": "user", "content": task if block is None else task + "\n\n" + block}]
 
 
 def all_inputs(rec: dict) -> dict[str, list[dict]]:
-    """The six inputs of the ladder, in order, for one blend record."""
+    """The seven inputs, for one blend record: the six-step ladder plus the schema alone."""
     c, u, v, g = rec["concept"], rec["u"], rec["v"], rec["generic_space"]
     task = blend_task(c, rec["triples"])
     return {
@@ -66,4 +71,5 @@ def all_inputs(rec: dict) -> dict[str, list[dict]]:
         "inputs": ctx_blend_block(task, blk_inputs(c, u, v)),
         "vacuous": ctx_blend_block(task, blk_schema(c, u, v, VACUOUS_SCHEMA)),
         "generic": ctx_blend_block(task, blk_schema(c, u, v, g)),
+        "generic_only": ctx_blend_block(task, blk_schema_only(c, g)),
     }

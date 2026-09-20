@@ -49,7 +49,7 @@ Scored block: the whole description of the blend, every triple rendered as one l
     <c> --requires--> Y
     ...
 
-Six inputs appended to the task, in order of how much of the blend they reveal:
+Seven inputs appended to the task; the first six form a ladder in order of how much of the blend they reveal, the seventh is the schema without the inputs:
 
 | input | appended text |
 |---|---|
@@ -59,6 +59,7 @@ Six inputs appended to the task, in order of how much of the blend they reveal:
 | inputs | "<c> is a new concept built by blending <u> and <v>." |
 | vacuous schema (fixed control) | inputs + " What <u> and <v> share, and what makes them blendable, is: both exist and involve change." |
 | generic space | inputs + " What <u> and <v> share, and what makes them blendable, is: <g>." |
+| generic space alone | "<c> is a new concept built on this shared schema: <g>." |
 
 The vacuous schema is the fixed control for the generic space: the judge instructions name
 "both exist" and "both involve change" as the canonical vacuous schemas, so this is the
@@ -71,9 +72,16 @@ Quantities, L = log-probability of the block (or of one triple) under an input:
 - generic-space gain: L(generic) - L(inputs). What the shared schema adds once both inputs are
   named. Control: L(vacuous) - L(inputs).
 - total gain: L(generic) - L(skeleton).
-- joint compression gain (paper): on the inherited triples (tags u, v, uv), L(generic) -
-  max(L(input u), L(input v)), summed within the blend.
-- emergent property gain (paper): the same on the emergent triples.
+- joint compression gain (paper, user's framing 2026-09-19: "the generic space makes the blended
+  space's properties from each input u or v more likely than either of the input concepts did on
+  their own"): on the triples tagged u or v, L(generic) - max(L(input u), L(input v)), sums taken
+  within the blend before the max. The uv triples are reported separately (shared-slot gain) and
+  folded in as a variant.
+- emergent property gain (paper: "the generic space makes the blended concept's property more
+  likely than either of the input concepts did on their own"): the same contrast on the emergent
+  triples.
+- both paper gains are reported under two readings of "the generic space": the schema with the
+  two inputs named (generic) and the schema phrase alone (generic space alone).
 - synergy per triple: S(t) = [L(t | inputs) - L(t | skeleton)] - [L(t | u) - L(t | skeleton)] -
   [L(t | v) - L(t | skeleton)]. Positive when the two inputs together predict the triple more
   than the sum of what each does alone (the interaction-information proxy for the PID story in

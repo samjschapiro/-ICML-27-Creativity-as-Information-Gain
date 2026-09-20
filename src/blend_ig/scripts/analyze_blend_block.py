@@ -5,8 +5,9 @@ Per reader and averaged over readers (valid blends unless stated):
                 gains (second input, generic space), the vacuous-schema control, the total
   by tag        per-triple gains grouped by the generator's tag: own input, other input, both,
                 synergy, generic-space step
-  paper gains   joint compression gain (inherited triples) and emergent property gain (emergent
-                triples): L(generic) - max(L(input u), L(input v)), summed within the blend
+  paper gains   joint compression gain (inherited triples, tags u and v) and emergent property
+                gain (emergent triples): L(generic) - max(L(input u), L(input v)), summed within
+                the blend; reported for the schema with the inputs named and for the schema alone
   judges        generic-space gain by unanimous generic_ok verdict; emergent-triple generic-space
                 gain by unanimous scope 3 vs 1; absolute log-probability per token by coherence
   surprise      Spearman of KOMBINE surprise with the total gain
@@ -25,7 +26,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[3]))
 
 from src.utils import copy_config, init_directory, load_config
 
-INPUTS = ["skeleton", "input_u", "input_v", "inputs", "vacuous", "generic"]
+INPUTS = ["skeleton", "input_u", "input_v", "inputs", "vacuous", "generic", "generic_only"]
 FILE = "logprobs_blend_block.jsonl"
 
 
@@ -96,15 +97,22 @@ def analyze(B: pd.DataFrame, T: pd.DataFrame) -> dict:
     t["synergy"] = t.L_inputs + t.L_skeleton - t.L_input_u - t.L_input_v
     t["generic_step"] = t.L_generic - t.L_inputs
     t["vacuous_step"] = t.L_vacuous - t.L_inputs
-    t["paper_gain"] = t.L_generic - t[["L_input_u", "L_input_v"]].max(axis=1)
-    by = t.groupby("tag")[["own", "other", "best_single", "both", "synergy", "generic_step", "vacuous_step", "paper_gain"]].mean()
+    t["generic_only_step"] = t.L_generic_only - t.L_inputs
+    by = t.groupby("tag")[["own", "other", "best_single", "both", "synergy", "generic_step", "vacuous_step", "generic_only_step"]].mean()
     by["n"] = t.groupby("tag").size()
     out["by_tag"] = by.round(3).to_dict(orient="index")
-    # paper gains, summed within blend
-    inh = t[t.tag.isin(["u", "v", "uv"])].groupby("id").paper_gain.sum()
-    eme = t[t.tag == "emergent"].groupby("id").paper_gain.sum()
-    out["joint_compression_gain"] = _paired(inh)
-    out["emergent_property_gain"] = _paired(eme)
+    # paper gains (user's framing): the generic space vs the better single input, on the inherited
+    # properties (tags u and v; uv reported separately) and on the emergent properties. Summed
+    # within the blend, the max taken over the group sums. Two readings of "the generic space":
+    # the schema with both inputs named (generic) and the schema alone (generic_only).
+    for gcol, label in (("L_generic", "generic"), ("L_generic_only", "generic_only")):
+        for tags, name in ((["u", "v"], "joint_compression_gain"), (["uv"], "shared_slot_gain"),
+                           (["u", "v", "uv"], "joint_compression_gain_incl_uv"), (["emergent"], "emergent_property_gain")):
+            grp = t[t.tag.isin(tags)].groupby("id")[[gcol, "L_input_u", "L_input_v"]].sum()
+            if len(grp) == 0:
+                continue
+            gain = grp[gcol] - grp[["L_input_u", "L_input_v"]].max(axis=1)
+            out[f"{name}__{label}"] = _paired(gain)
     # synergy ordering test: emergent + uv vs u + v triples
     a = t[t.tag.isin(["emergent", "uv"])].synergy; b = t[t.tag.isin(["u", "v"])].synergy
     out["synergy_fused_vs_inherited_delta"], out["synergy_fused_vs_inherited_p"] = _delta_p(a, b)
@@ -178,7 +186,7 @@ def main(config_path, overwrite=False, debug=False):
     print("\nby tag, average over readers (valid blends):")
     print(pd.DataFrame(table["average_over_readers"]["by_tag"]).T.to_string())
     print("\npaper gains, average over readers:")
-    for k in ("joint_compression_gain", "emergent_property_gain"):
+    for k in sorted(k for k in table["average_over_readers"] if "__generic" in k):
         print(k, {kk: (round(vv, 2) if isinstance(vv, float) else vv) for kk, vv in table["average_over_readers"][k].items()})
 
 
