@@ -1,0 +1,7 @@
+# Blend ladder (six inputs, whole description scored), local mlx reader.
+dataset_dir: data/blend_ig/dataset
+output_dir: data/blend_ig/dataset/downstream/blendblock_qwen7b
+backend: mlx
+model: mlx-community/Qwen2.5-7B-Instruct-8bit
+resume: true
+debug_limit: 4

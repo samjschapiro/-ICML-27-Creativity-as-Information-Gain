@@ -24,6 +24,11 @@ bash scripts/analogy_ig/analyze_models.sh       # cross-reader comparison table
 bash scripts/analogy_ig/analyze_invention_block.sh  # invention gain ladder (skeleton / instruction / mapping / content), six readers
 bash scripts/analogy_ig/make_camera_figures.sh  # paper histograms (Nimbus Roman, ICML widths)
 bash scripts/analogy_ig/lambda_run.sh <ip> ...  # run readers on a Lambda box; lambda_autofinish*.sh fetch and terminate
+
+# blend_ig track (same design for conceptual blends)
+bash scripts/blend_ig/build_dataset.sh           # KOMBINE blends + panel verdicts -> data/blend_ig/dataset
+bash scripts/blend_ig/score_blend_block_local.sh # six-input ladder under the local reader
+bash scripts/blend_ig/analyze_blend_block.sh     # cross-reader ladder, tag decomposition, judge contrasts
 ```
 
 Never pass the overwrite flag to any script; choose a new `output_dir` instead.

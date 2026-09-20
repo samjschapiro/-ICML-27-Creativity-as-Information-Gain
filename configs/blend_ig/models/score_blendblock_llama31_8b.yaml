@@ -1,0 +1,8 @@
+# Blend ladder (six inputs, whole description scored), GPU reader.
+dataset_dir: data/blend_ig/dataset
+output_dir: data/blend_ig/dataset/downstream/blendblock_llama31_8b
+backend: hf
+dtype: bfloat16
+model: meta-llama/Llama-3.1-8B-Instruct
+resume: true
+debug_limit: 4

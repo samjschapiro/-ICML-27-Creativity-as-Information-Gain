@@ -1,0 +1,8 @@
+# Blend ladder (six inputs, whole description scored), GPU reader.
+dataset_dir: data/blend_ig/dataset
+output_dir: data/blend_ig/dataset/downstream/blendblock_olmo2_7b
+backend: hf
+dtype: bfloat16
+model: allenai/OLMo-2-1124-7B-Instruct
+resume: true
+debug_limit: 4

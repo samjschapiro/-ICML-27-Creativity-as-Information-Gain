@@ -1,0 +1,9 @@
+dataset_dir: data/blend_ig/dataset
+readers:
+  qwen25_7b_8bit_mlx: data/blend_ig/dataset/downstream/blendblock_qwen7b
+  llama31_8b: data/blend_ig/dataset/downstream/blendblock_llama31_8b
+  mistral7b_v03: data/blend_ig/dataset/downstream/blendblock_mistral7b_v03
+  gemma2_9b: data/blend_ig/dataset/downstream/blendblock_gemma2_9b
+  qwen25_14b: data/blend_ig/dataset/downstream/blendblock_qwen25_14b
+  olmo2_7b: data/blend_ig/dataset/downstream/blendblock_olmo2_7b
+output_dir: data/blend_ig/dataset/downstream/blend_block_ladder

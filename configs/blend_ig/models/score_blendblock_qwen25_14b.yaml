@@ -1,0 +1,8 @@
+# Blend ladder (six inputs, whole description scored), GPU reader.
+dataset_dir: data/blend_ig/dataset
+output_dir: data/blend_ig/dataset/downstream/blendblock_qwen25_14b
+backend: hf
+dtype: bfloat16
+model: Qwen/Qwen2.5-14B-Instruct
+resume: true
+debug_limit: 4

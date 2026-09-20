@@ -1,0 +1,3 @@
+# Extract all KOMBINE blends (35 models x 30 pairs) with judge verdicts.
+kombine_dir: /Users/schapiro/Desktop/Experiments/comb-creat-eval/data/kg_creat/kombine_test30
+output_dir: data/blend_ig/dataset
