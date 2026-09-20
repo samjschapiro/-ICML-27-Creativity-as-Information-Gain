@@ -2,7 +2,7 @@
 
 Per reader and averaged over readers (valid blends unless stated):
   ladder        mean log-probability of the whole description under each input, the consecutive
-                gains (second input, generic space), the vacuous-schema control, the total
+                gains (second input, generic space), the vacuous schema, the total
   by tag        per-triple gains grouped by the generator's tag: own input, other input, both,
                 synergy, generic-space step
   paper gains   joint compression gain (inherited triples, tags u and v) and emergent property
@@ -82,7 +82,7 @@ def analyze(B: pd.DataFrame, T: pd.DataFrame) -> dict:
     for s in INPUTS + ["input_max"]:
         out[f"L_{s}"] = float(v[f"L_{s}"].mean())
     gains = {"second_input": ("inputs", "input_max"), "generic_space": ("generic", "inputs"),
-             "vacuous_control": ("vacuous", "inputs"), "generic_vs_vacuous": ("generic", "vacuous"),
+             "vacuous_schema": ("vacuous", "inputs"), "generic_vs_vacuous": ("generic", "vacuous"),
              "inputs_vs_skeleton": ("inputs", "skeleton"), "total": ("generic", "skeleton")}
     for name, (a, b) in gains.items():
         p = _paired(v[f"L_{a}"] - v[f"L_{b}"])
@@ -113,8 +113,8 @@ def analyze(B: pd.DataFrame, T: pd.DataFrame) -> dict:
                 continue
             gain = grp[gcol] - grp[["L_input_u", "L_input_v"]].max(axis=1)
             out[f"{name}__{label}"] = _paired(gain)
-    # the same groups against the control that names both inputs without the schema: what the
-    # generic space itself contributes (figure panel between the single inputs and the schema)
+    # the same groups against the condition that says the concept blends u and v without giving
+    # the schema: what the generic space itself contributes (figure panel before the schema)
     for tags, name in ((["u", "v"], "joint_compression_gain"), (["uv"], "shared_slot_gain"),
                        (["u", "v", "uv"], "joint_compression_gain_incl_uv"), (["emergent"], "emergent_property_gain")):
         grp = t[t.tag.isin(tags)].groupby("id")[["L_generic", "L_inputs", "L_vacuous"]].sum()
@@ -187,7 +187,7 @@ def main(config_path, overwrite=False, debug=False):
     df.to_csv(out / "results" / "ladder.csv")
     show = ["n_valid", "L_skeleton", "L_input_max", "L_inputs", "L_vacuous", "L_generic",
             "gain_second_input", "gain_second_input_frac_pos", "gain_generic_space", "gain_generic_space_frac_pos",
-            "gain_vacuous_control", "gain_generic_vs_vacuous_frac_pos", "gain_total", "gain_total_frac_pos",
+            "gain_vacuous_schema", "gain_generic_vs_vacuous_frac_pos", "gain_total", "gain_total_frac_pos",
             "synergy_fused_vs_inherited_delta", "generic_gain_by_generic_ok_delta",
             "emergent_generic_gain_scope3_vs_scope1_delta", "surprise_vs_total_spearman"]
     pd.set_option("display.width", 250); pd.set_option("display.max_columns", 40)

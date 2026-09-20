@@ -57,20 +57,22 @@ Seven inputs appended to the task; the first six form a ladder in order of how m
 | input u | "<c> is a new concept built from <u>." |
 | input v | "<c> is a new concept built from <v>." |
 | inputs | "<c> is a new concept built by blending <u> and <v>." |
-| vacuous schema (fixed control) | inputs + " What <u> and <v> share, and what makes them blendable, is: both exist and involve change." |
+| vacuous schema | inputs + " What <u> and <v> share, and what makes them blendable, is: both exist and involve change." |
 | generic space | inputs + " What <u> and <v> share, and what makes them blendable, is: <g>." |
 | generic space alone | "<c> is a new concept built on this shared schema: <g>." |
 
-The vacuous schema is the fixed control for the generic space: the judge instructions name
-"both exist" and "both involve change" as the canonical vacuous schemas, so this is the
-strongest content-free stand-in for g in the same slot. No per-item control. No system message.
+The baseline for the generic space is the condition that tells the reader the concept is a blend
+of u and v without giving the generic space. The vacuous schema is an extra input of the same
+shape as the generic-space input with an empty phrase in the schema slot (the judge instructions
+name "both exist" and "both involve change" as the canonical vacuous schemas); it checks that the
+sentence itself is worth nothing. No per-item variants. No system message.
 Per-token log-probabilities are attributed to entity or relation spans of each triple, so every
 quantity below exists for the whole block and for each triple.
 
 Quantities, L = log-probability of the block (or of one triple) under an input:
 - second-input gain: L(inputs) - max(L(input u), L(input v)). Does the blend need both inputs.
-- generic-space gain: L(generic) - L(inputs). What the shared schema adds once both inputs are
-  named. Control: L(vacuous) - L(inputs).
+- generic-space gain: L(generic) - L(inputs). What the shared schema adds once the reader is
+  told the concept blends u and v. For comparison: L(vacuous) - L(inputs).
 - total gain: L(generic) - L(skeleton).
 - joint compression gain (paper, user's framing 2026-09-19: "the generic space makes the blended
   space's properties from each input u or v more likely than either of the input concepts did on
@@ -82,12 +84,12 @@ Quantities, L = log-probability of the block (or of one triple) under an input:
   triples.
 - both paper gains are reported under two readings of "the generic space": the schema with the
   two inputs named (generic) and the schema phrase alone (generic space alone).
-- both paper gains are also reported against the control that names both inputs without the
+- both paper gains are also reported against the condition that names both inputs without the
   schema (user, 2026-09-19: "so we can isolate the contribution of the generic space"), and
   against the vacuous schema in the same slot.
 
 Figure panels (the user's a-to-i format): (a) task; (b) input u alone; (c) input v alone;
-(d) both inputs named, no schema; (e) generic space; then the log-probabilities under (b)-(e),
+(d) told it is a blend of u and v, no schema; (e) generic space; then the log-probabilities under (b)-(e),
 the scored block, and histograms over valid blends of the u/v lines and of the emergent lines
 under the four inputs.
 - synergy per triple: S(t) = [L(t | inputs) - L(t | skeleton)] - [L(t | u) - L(t | skeleton)] -
@@ -99,7 +101,7 @@ under the four inputs.
 
 - P1 (both inputs needed): second-input gain > 0 for most valid blends, every reader.
 - P2 (the schema carries information): generic-space gain > 0 for most valid blends and larger
-  than the vacuous control, every reader. Falsified if the real schema is worth no more than
+  than the vacuous schema's, every reader. Falsified if the real schema is worth no more than
   "both exist and involve change".
 - P3 (tag structure): for u-tagged triples the gain from input u alone is close to the gain from
   both inputs, and input v adds little; symmetric for v-tagged triples. For uv-tagged and

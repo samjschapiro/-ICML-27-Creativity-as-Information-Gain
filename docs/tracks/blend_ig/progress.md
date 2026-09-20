@@ -4,11 +4,11 @@
 
 - Built the track as the blending counterpart of the accepted invention design (`design.md`):
   fixed skeleton task, whole description of the blend scored jointly, seven appended inputs
-  (skeleton, input u, input v, both inputs, vacuous schema as fixed control, generic space, generic
-  space alone). The user's framing of the two paper gains (2026-09-19): "the generic space makes
+  (skeleton, input u, input v, blend of u and v with no schema, vacuous schema, generic space,
+  generic space alone). The user's framing of the two paper gains (2026-09-19): "the generic space makes
   the blended space's properties from each input u or v more likely than either of the input
   concepts did on their own" (joint compression gain, tags u and v) and the same for the emergent
-  properties (emergent property gain). The both-inputs control was promoted to a figure panel at
+  properties (emergent property gain). The blend-of-u-and-v condition (no schema) was promoted to a figure panel at
   the user's request so the generic space's own contribution is isolated.
 - Data: 1033 blends, 35 models, 30 pairs; valid V_bl (majority generic_ok, coherent, scope >= 2)
   393, all 30 pairs. Generator's tags used as given.
@@ -32,7 +32,7 @@
   joint compression gain (u and v lines) +2.1 [1.7, 2.5], 70% positive; including uv lines +6.0
   [5.4, 6.7], 88%; shared-slot (uv) part alone +3.2 [2.7, 3.7], 77%. Emergent property gain -0.4
   [-0.6, -0.1], 43% positive (negative for five of six readers, Qwen-14B -0.03); against the
-  both-inputs control +0.4 [0.2, 0.6], 56%; the schema alone (inputs not named) -1.7.
+  blend-of-u-and-v condition +0.4 [0.2, 0.6], 56%; the schema alone (inputs not named) -1.7.
 - Synergy proxy: fused lines (uv, emergent) do not show more synergy than inherited lines
   (Cliff's delta -0.1 to -0.3, opposite to P3's ordering).
 - Judges: generic-space gain is the same whether the panel unanimously accepted g (4.5) or

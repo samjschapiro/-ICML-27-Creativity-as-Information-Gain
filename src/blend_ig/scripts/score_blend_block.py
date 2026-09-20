@@ -1,7 +1,7 @@
 """Score the whole description of each blend under the six inputs of the ladder.
 
 Scored block: every triple of the blend as one line (see render.render_block). Inputs: skeleton,
-input u, input v, inputs, vacuous schema (fixed control), generic space, generic space alone
+input u, input v, blend of u and v (no schema), vacuous schema, generic space, generic space alone
 (schema without the inputs named). Writes one line per blend:
 {"id", "n_triples", "tags", <input>: {logp, n_tokens, logp_by_kind, n_tokens_by_kind}} where the
 by-kind keys are '<line index>:<entity|relation>' or 'sep', so per-triple sums are recoverable.
