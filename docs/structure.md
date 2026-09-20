@@ -27,7 +27,7 @@ src/
 └── blend_ig/                         # track: information gain licensed by a blend (skeleton task, six-input ladder); reuses analogy_ig scorers
     ├── dataset.py                    # KOMBINE blends (concept, generic space, tagged triples) + panel verdicts -> V_bl
     ├── render.py                     # blend task, six appended inputs, per-triple span labels
-    └── scripts/                      # build_dataset.py, score_blend_block.py, analyze_blend_block.py
+    └── scripts/                      # build_dataset.py, score_blend_block.py, analyze_blend_block.py, make_blend_figures.py
 
 configs/blend_ig/                     # build_dataset, analyze_blend_block, local/ (qwen7b mlx), models/ (five GPU readers)
 scripts/blend_ig/                     # wrappers; lambda_run.sh, lambda_autofinish_blend.sh
@@ -43,7 +43,7 @@ docs/
 ├── memos/                            # analogy gain taxonomy; overwrite hazard
 ├── reports/2026-09-18_analogy_ig_phase1/   # phase-1 report, figures, examples
 ├── tracks/analogy_ig/                # design.md (predictions, phases), progress.md (dated history)
-├── tracks/blend_ig/                  # design.md (blend ladder, predictions fixed before scoring)
+├── tracks/blend_ig/                  # design.md (blend ladder, predictions fixed before scoring), progress.md (results)
 ├── logs/                             # session logs
 └── custom/paper_writing.md           # Overleaf conventions
 

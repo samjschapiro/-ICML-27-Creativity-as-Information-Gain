@@ -84,3 +84,14 @@ Claude never uses the overwrite flag.
   (n = 30) all positive, p = 2e-9; per generating model (n = 35) all positive, p = 6e-11.
 - Still open: association-vs-analogy test (needs `kombine_retest30`, which shares the 30 pairs
   across tasks but has no judge scores); symmetry check.
+
+## Addendum (2026-09-19, night): blend track built and scored
+- Built `blend_ig` as the blending counterpart of the skeleton design; predictions fixed in
+  `docs/tracks/blend_ig/design.md` before scoring; the user's framing of joint compression gain and
+  emergent property gain adopted verbatim, both-inputs control promoted to a figure panel.
+- Scored 1033 blends x 7 inputs under six readers (local Qwen; five on one A100, auto-terminated).
+- Result (393 valid blends): generic space +4.4 nats over naming both inputs (80% positive), vacuous
+  schema +0.3; the schema's information lands on the uv lines (+2.4 per line, largest step for every
+  reader); joint compression gain +2.1 (u, v lines) or +6.0 with uv; emergent property gain -0.4
+  (schema does not beat the better single input on emergent lines). Judges invisible. Details in
+  `docs/tracks/blend_ig/progress.md`.

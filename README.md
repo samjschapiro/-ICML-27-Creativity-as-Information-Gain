@@ -29,6 +29,7 @@ bash scripts/analogy_ig/lambda_run.sh <ip> ...  # run readers on a Lambda box; l
 bash scripts/blend_ig/build_dataset.sh           # KOMBINE blends + panel verdicts -> data/blend_ig/dataset
 bash scripts/blend_ig/score_blend_block_local.sh # six-input ladder under the local reader
 bash scripts/blend_ig/analyze_blend_block.sh     # cross-reader ladder, tag decomposition, judge contrasts
+bash scripts/blend_ig/make_blend_figures.sh      # paper histograms (inherited lines, emergent lines; four inputs)
 ```
 
 Never pass the overwrite flag to any script; choose a new `output_dir` instead.
