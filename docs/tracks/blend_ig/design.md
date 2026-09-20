@@ -82,6 +82,14 @@ Quantities, L = log-probability of the block (or of one triple) under an input:
   triples.
 - both paper gains are reported under two readings of "the generic space": the schema with the
   two inputs named (generic) and the schema phrase alone (generic space alone).
+- both paper gains are also reported against the control that names both inputs without the
+  schema (user, 2026-09-19: "so we can isolate the contribution of the generic space"), and
+  against the vacuous schema in the same slot.
+
+Figure panels (the user's a-to-i format): (a) task; (b) input u alone; (c) input v alone;
+(d) both inputs named, no schema; (e) generic space; then the log-probabilities under (b)-(e),
+the scored block, and histograms over valid blends of the u/v lines and of the emergent lines
+under the four inputs.
 - synergy per triple: S(t) = [L(t | inputs) - L(t | skeleton)] - [L(t | u) - L(t | skeleton)] -
   [L(t | v) - L(t | skeleton)]. Positive when the two inputs together predict the triple more
   than the sum of what each does alone (the interaction-information proxy for the PID story in

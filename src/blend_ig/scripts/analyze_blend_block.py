@@ -113,6 +113,15 @@ def analyze(B: pd.DataFrame, T: pd.DataFrame) -> dict:
                 continue
             gain = grp[gcol] - grp[["L_input_u", "L_input_v"]].max(axis=1)
             out[f"{name}__{label}"] = _paired(gain)
+    # the same groups against the control that names both inputs without the schema: what the
+    # generic space itself contributes (figure panel between the single inputs and the schema)
+    for tags, name in ((["u", "v"], "joint_compression_gain"), (["uv"], "shared_slot_gain"),
+                       (["u", "v", "uv"], "joint_compression_gain_incl_uv"), (["emergent"], "emergent_property_gain")):
+        grp = t[t.tag.isin(tags)].groupby("id")[["L_generic", "L_inputs", "L_vacuous"]].sum()
+        if len(grp) == 0:
+            continue
+        out[f"{name}__generic_vs_inputs"] = _paired(grp.L_generic - grp.L_inputs)
+        out[f"{name}__vacuous_vs_inputs"] = _paired(grp.L_vacuous - grp.L_inputs)
     # synergy ordering test: emergent + uv vs u + v triples
     a = t[t.tag.isin(["emergent", "uv"])].synergy; b = t[t.tag.isin(["u", "v"])].synergy
     out["synergy_fused_vs_inherited_delta"], out["synergy_fused_vs_inherited_p"] = _delta_p(a, b)
@@ -186,7 +195,7 @@ def main(config_path, overwrite=False, debug=False):
     print("\nby tag, average over readers (valid blends):")
     print(pd.DataFrame(table["average_over_readers"]["by_tag"]).T.to_string())
     print("\npaper gains, average over readers:")
-    for k in sorted(k for k in table["average_over_readers"] if "__generic" in k):
+    for k in sorted(k for k in table["average_over_readers"] if "__" in k):
         print(k, {kk: (round(vv, 2) if isinstance(vv, float) else vv) for kk, vv in table["average_over_readers"][k].items()})
 
 
