@@ -222,7 +222,7 @@ def main(config_path, overwrite=False, debug=False):
 
     # ---- Fig 2b: raw joint log-probability of the invented concept's description under four inputs,
     #      reader-averaged: skeleton only / + analogy instruction / + aligned paths / + source facts
-    AMB = "#F0B75B"
+    AMB, GREY = "#F0B75B", "#E5E5E5"
     series = {}
     for col in ("L_inv_structure", "L_inv_instruction", "L_inv_mapping", "L_inv_content"):
         series[col] = pd.concat([data[n].set_index("id")[col].rename(n) for n in names], axis=1).mean(axis=1)
@@ -230,7 +230,7 @@ def main(config_path, overwrite=False, debug=False):
     fig, ax = plt.subplots(figsize=(COL_W, 2.0))
     lo, hi = -110, 0
     bins = np.linspace(lo, hi, 46)
-    for col, colr in (("L_inv_structure", RED), ("L_inv_instruction", BLU), ("L_inv_mapping", AMB), ("L_inv_content", GRN)):
+    for col, colr in (("L_inv_structure", GREY), ("L_inv_instruction", BLU), ("L_inv_mapping", AMB), ("L_inv_content", GRN)):
         x = F[col].clip(lo, hi)
         ax.hist(x, bins=bins, histtype="stepfilled", color=colr, alpha=0.35, lw=0)
         ax.hist(x, bins=bins, histtype="step", color=colr, lw=1.3)
@@ -244,8 +244,27 @@ def main(config_path, overwrite=False, debug=False):
                                  "mean_instruction": float(F.L_inv_instruction.mean()),
                                  "mean_mapping": float(F.L_inv_mapping.mean()),
                                  "mean_content": float(F.L_inv_content.mean()),
-                                 "colors": {"relational skeleton": RED, "analogy instruction": BLU,
+                                 "colors": {"relational skeleton": GREY, "analogy instruction": BLU,
                                             "analogy mapping": AMB, "analogy content": GRN}}
+
+    # ---- Fig 2c: information gain above the skeleton, one point per input in order, s.e.m. bars ----
+    steps = (("L_inv_instruction", "(a)", BLU), ("L_inv_mapping", "(b)", AMB), ("L_inv_content", "(c)", GRN))
+    gains = [(F[c] - F.L_inv_structure) for c, _, _ in steps]
+    means = [float(g.mean()) for g in gains]
+    sems = [float(g.std(ddof=1) / np.sqrt(len(g))) for g in gains]
+    fig, ax = plt.subplots(figsize=(COL_W, 2.0))
+    xs = np.arange(len(steps))
+    ax.plot(xs, means, "-", color=INK2, lw=1.0, zorder=1)
+    for x, m, se, (_, _, colr) in zip(xs, means, sems, steps):
+        ax.errorbar(x, m, yerr=se, fmt="o", color=colr, mec=INK2, mew=0.6, ms=6, ecolor=INK2, elinewidth=1.0, capsize=3, zorder=2)
+    ax.set_xticks(xs); ax.set_xticklabels([lab for _, lab, _ in steps])
+    ax.set_xlim(-0.4, len(steps) - 0.6); ax.set_ylim(0, max(m + se for m, se in zip(means, sems)) * 1.15)
+    ax.set_ylabel("information gain above skeleton (nats)", color=INK)
+    ax.grid(axis="y", color=GRID, lw=0.5); ax.set_axisbelow(True); ax.tick_params(colors=INK2)
+    for sp in ("left", "bottom"):
+        ax.spines[sp].set_color(INK2)
+    save(fig, "fig_invention_gain_line")
+    summary["invention_line"] = {"n": int(len(F)), "inputs": [lab for _, lab, _ in steps], "mean_gain": means, "sem": sems}
 
     # ---- Fig 3: judge contrasts (Cliff's delta) --------------------------------------------
     integ_v, coh_v = [], []
