@@ -252,19 +252,22 @@ def main(config_path, overwrite=False, debug=False):
     gains = [(F[c] - F.L_inv_structure) for c, _, _ in steps]
     means = [float(g.mean()) for g in gains]
     sems = [float(g.std(ddof=1) / np.sqrt(len(g))) for g in gains]
+    cis = [_boot_mean(g.values) for g in gains]  # (mean, lo, hi), bootstrap 95% CI
     fig, ax = plt.subplots(figsize=(COL_W, 2.0))
     xs = np.arange(len(steps))
     ax.plot(xs, means, "-", color=INK2, lw=1.0, zorder=1)
-    for x, m, se, (_, _, colr) in zip(xs, means, sems, steps):
-        ax.errorbar(x, m, yerr=se, fmt="o", color=colr, mec=INK2, mew=0.6, ms=6, ecolor=INK2, elinewidth=1.0, capsize=3, zorder=2)
+    for x, m, (_, lo_, hi_), (_, _, colr) in zip(xs, means, cis, steps):
+        ax.errorbar(x, m, yerr=[[m - lo_], [hi_ - m]], fmt="o", color=colr, mec=INK2, mew=0.6, ms=6,
+                    ecolor=INK2, elinewidth=1.0, capsize=3, zorder=2)
     ax.set_xticks(xs); ax.set_xticklabels([lab for _, lab, _ in steps])
-    ax.set_xlim(-0.4, len(steps) - 0.6); ax.set_ylim(0, max(m + se for m, se in zip(means, sems)) * 1.15)
+    ax.set_xlim(-0.4, len(steps) - 0.6); ax.set_ylim(0, max(hi_ for _, _, hi_ in cis) * 1.15)
     ax.set_ylabel("information gain above skeleton (nats)", color=INK)
     ax.grid(axis="y", color=GRID, lw=0.5); ax.set_axisbelow(True); ax.tick_params(colors=INK2)
     for sp in ("left", "bottom"):
         ax.spines[sp].set_color(INK2)
     save(fig, "fig_invention_gain_line")
-    summary["invention_line"] = {"n": int(len(F)), "inputs": [lab for _, lab, _ in steps], "mean_gain": means, "sem": sems}
+    summary["invention_line"] = {"n": int(len(F)), "inputs": [lab for _, lab, _ in steps], "mean_gain": means, "sem": sems,
+                                 "ci95": [[lo_, hi_] for _, lo_, hi_ in cis]}
 
     # ---- Fig 3: judge contrasts (Cliff's delta) --------------------------------------------
     integ_v, coh_v = [], []

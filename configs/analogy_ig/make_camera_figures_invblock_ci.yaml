@@ -1,0 +1,18 @@
+control: named   # which control the figure shows: named (source concept named, no path) or format (content-free path)
+dataset_dir: data/analogy_ig/dataset
+composite_json: /Users/schapiro/Desktop/Experiments/comb-creat-eval/data/kg_creat/kombine_test30/scores/composite.json
+readers:
+  qwen7b: data/analogy_ig/dataset/downstream/logprob_qwen7b_projdir
+  qwen14b: data/analogy_ig/dataset/downstream/logprob_qwen25_14b_projdir
+  llama8b: data/analogy_ig/dataset/downstream/logprob_llama31_8b_projdir
+  mistral7b: data/analogy_ig/dataset/downstream/logprob_mistral7b_v03_projdir
+  gemma9b: data/analogy_ig/dataset/downstream/logprob_gemma2_9b_projdir
+  olmo7b: data/analogy_ig/dataset/downstream/logprob_olmo2_7b_projdir
+reader_labels:
+  qwen7b: Qwen2.5-7B
+  qwen14b: Qwen2.5-14B
+  llama8b: Llama-3.1-8B
+  mistral7b: Mistral-7B
+  gemma9b: Gemma-2-9B
+  olmo7b: OLMo-2-7B
+output_dir: data/analogy_ig/dataset/downstream/camera_figures_invblock_ci

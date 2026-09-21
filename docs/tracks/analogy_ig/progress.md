@@ -222,6 +222,6 @@ assets from `make_report_assets.py`). P1b section to be filled when the target-s
 - Invention histogram: skeleton series recoloured #E5E5E5 (user); instruction #488AE5, mapping
   #F0B75B, content #9CDC9B unchanged. New line figure `fig_invention_gain_line`: gain above the
   skeleton per input in order, (a) instruction +1.2, (b) instruction and mapping +17.8,
-  (c) instruction, mapping and projected facts +27.0 nats, s.e.m. 0.16 / 0.57 / 0.68 over 561
-  analogies (reader-averaged). Output dir `camera_figures_invblock_grey`; PDFs in the paper's
+  (c) instruction, mapping and projected facts +27.0 nats, 95% bootstrap CI [0.9, 1.5] / [16.7, 19.0] / [25.7, 28.3] as error bars (s.e.m. 0.16 / 0.57 / 0.68 kept in summary.json) over 561
+  analogies (reader-averaged). Output dir `camera_figures_invblock_ci`; PDFs in the paper's
   `media/figures/`.
