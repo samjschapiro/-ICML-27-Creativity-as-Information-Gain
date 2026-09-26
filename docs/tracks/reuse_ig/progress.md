@@ -44,3 +44,10 @@ to be abstract: a demonstration on other concepts is worth a third of the item's
 best, and a schema sentence is worth nothing without the path. Consistent with the analogy and
 blending results: the information is in the aligned entities, not in the description of the
 relation between domains.
+
+### Reading of 1b (user, 2026-09-26)
+The content input lets the reader look the answer up (the source fact names the entity whose
+counterpart is the held-out one), so the step from mapping to content is partly a lookup. The
+finding to quote is the mapping step: the mapping alone, with no fact about the projected
+concept, makes the held-out fact of the novel concept +3.3 nats more likely (69% of analogies).
+The figure for 1b can show the content series in grey or drop it.
