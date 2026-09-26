@@ -30,6 +30,11 @@ bash scripts/blend_ig/build_dataset.sh           # KOMBINE blends + panel verdic
 bash scripts/blend_ig/score_blend_block_local.sh # six-input ladder under the local reader
 bash scripts/blend_ig/analyze_blend_block.sh     # cross-reader ladder, tag decomposition, judge contrasts
 bash scripts/blend_ig/make_blend_figures.sh      # paper histograms (inherited lines, emergent lines; four inputs)
+
+# reuse_ig track (is a mapping reusable: held-out facts, demonstrations, cross-task)
+bash scripts/reuse_ig/build_items.sh             # all prompts once -> data/reuse_ig/items
+bash scripts/reuse_ig/score_reuse_local.sh       # score under the local reader
+bash scripts/reuse_ig/analyze_reuse.sh           # cross-reader gains per test
 ```
 
 Never pass the overwrite flag to any script; choose a new `output_dir` instead.
