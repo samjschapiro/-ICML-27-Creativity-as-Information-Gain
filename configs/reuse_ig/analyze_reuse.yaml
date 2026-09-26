@@ -1,0 +1,26 @@
+readers:
+  qwen25_7b_8bit_mlx:
+    reuse: data/reuse_ig/items/downstream/reuse_qwen7b
+    analogy_run: data/analogy_ig/dataset/downstream/logprob_qwen7b_projdir
+    blend_run: data/blend_ig/dataset/downstream/blendblock_qwen7b
+  llama31_8b:
+    reuse: data/reuse_ig/items/downstream/reuse_llama31_8b
+    analogy_run: data/analogy_ig/dataset/downstream/logprob_llama31_8b_projdir
+    blend_run: data/blend_ig/dataset/downstream/blendblock_llama31_8b
+  mistral7b_v03:
+    reuse: data/reuse_ig/items/downstream/reuse_mistral7b_v03
+    analogy_run: data/analogy_ig/dataset/downstream/logprob_mistral7b_v03_projdir
+    blend_run: data/blend_ig/dataset/downstream/blendblock_mistral7b_v03
+  gemma2_9b:
+    reuse: data/reuse_ig/items/downstream/reuse_gemma2_9b
+    analogy_run: data/analogy_ig/dataset/downstream/logprob_gemma2_9b_projdir
+    blend_run: data/blend_ig/dataset/downstream/blendblock_gemma2_9b
+  qwen25_14b:
+    reuse: data/reuse_ig/items/downstream/reuse_qwen25_14b
+    analogy_run: data/analogy_ig/dataset/downstream/logprob_qwen25_14b_projdir
+    blend_run: data/blend_ig/dataset/downstream/blendblock_qwen25_14b
+  olmo2_7b:
+    reuse: data/reuse_ig/items/downstream/reuse_olmo2_7b
+    analogy_run: data/analogy_ig/dataset/downstream/logprob_olmo2_7b_projdir
+    blend_run: data/blend_ig/dataset/downstream/blendblock_olmo2_7b
+output_dir: data/reuse_ig/items/downstream/reuse_analysis

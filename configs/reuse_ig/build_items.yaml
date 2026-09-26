@@ -1,0 +1,10 @@
+# Every scoring item of the reuse track (held-out hop, held-out fact, within-task, cross-task).
+analogy_dataset: data/analogy_ig/dataset
+blend_dataset: data/blend_ig/dataset
+projdir_run: data/analogy_ig/dataset/downstream/logprob_qwen7b_projdir   # projection_direction per id
+demos:            # fixed demonstrations, strict-valid analogies; the first is also the other-pair analogy
+  - "moonshotai_kimi-k2|E22|0.9|0"
+  - "anthropic_claude-opus-4-8|E27|0.9|0"
+  - "openai_gpt-5-mini|E26|0.9|0"
+other_pair_prompt: "22"
+output_dir: data/reuse_ig/items

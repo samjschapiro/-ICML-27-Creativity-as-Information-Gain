@@ -1,0 +1,7 @@
+items_dir: data/reuse_ig/items
+output_dir: data/reuse_ig/items/downstream/reuse_llama31_8b
+backend: hf
+dtype: bfloat16
+model: meta-llama/Llama-3.1-8B-Instruct
+resume: true
+debug_limit: 4

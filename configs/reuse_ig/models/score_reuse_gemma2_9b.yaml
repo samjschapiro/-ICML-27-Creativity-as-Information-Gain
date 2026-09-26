@@ -1,0 +1,7 @@
+items_dir: data/reuse_ig/items
+output_dir: data/reuse_ig/items/downstream/reuse_gemma2_9b
+backend: hf
+dtype: bfloat16
+model: google/gemma-2-9b-it
+resume: true
+debug_limit: 4
